@@ -1,5 +1,6 @@
 let outputWindow = document.getElementById("eas-window");
 let setGridBtn = document.getElementById("set-grid-btn");
+let clearGridBtn = document.getElementById("clear-grid-btn");
 
 let windowWidth = 500; //px
 const maxResolution = 100;
@@ -21,15 +22,18 @@ setGridBtn.addEventListener("click", () => {
     }
 
     if (!error) {
-        clearGrid();
+        emptyGrid();
         setupGrid(input);
     } else {
         alert(error);
     }
 });
 
+clearGridBtn.addEventListener("click", () => {
+    clearGrid();
+});
+
 function setupGrid(size = defaultGridSize) {
-    console.log(1/size);
     for (let i = 0; i < size*size; i++) {
         let square = document.createElement("div");
         square.classList.add("square");
@@ -41,8 +45,15 @@ function setupGrid(size = defaultGridSize) {
     }
 }
 
-function clearGrid() {
+function emptyGrid() {
     outputWindow.innerHTML = "";
+}
+
+function clearGrid() {
+    let squares = document.querySelectorAll(".square");
+    for (let square of squares) {
+        square.style.backgroundColor = "";
+    }
 }
 
 
