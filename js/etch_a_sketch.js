@@ -5,6 +5,8 @@ let clearGridBtn = document.getElementById("clear-grid-btn");
 let windowWidth = 500; //px
 const maxResolution = 100;
 const defaultGridSize = 16;
+const opacityStart = 0.5;
+const opacityIncrease = 0.1;
 
 outputWindow.style.width = `${windowWidth}px`;
 outputWindow.style.height = `${windowWidth}px`;
@@ -39,7 +41,13 @@ function setupGrid(size = defaultGridSize) {
         square.classList.add("square");
         square.style.flex = `1 0 ${100/size}%`;
         square.addEventListener("mouseover", (e) => {
-            e.target.style.backgroundColor = "black";
+            if (e.target.classList.contains("fill")) {
+                let opacity = Number(window.getComputedStyle(e.target).getPropertyValue("opacity"));
+                e.target.style.opacity = opacity + opacityIncrease;
+            } else {
+                e.target.classList.add("fill");
+                e.target.style.opacity = opacityStart;
+            }
         });
         outputWindow.appendChild(square);
     }
@@ -52,10 +60,13 @@ function emptyGrid() {
 function clearGrid() {
     let squares = document.querySelectorAll(".square");
     for (let square of squares) {
-        square.style.backgroundColor = "";
+        let opacity = Number(window.getComputedStyle(square).getPropertyValue("opacity"));
+        if (opacity > 0.2) {
+            square.style.opacity = opacity / 2;
+        } else {
+            square.classList.remove("fill");
+        }
     }
 }
-
-
 
 setupGrid();
