@@ -1,7 +1,7 @@
 let outputWindow = document.getElementById("eas-window");
 let setGridBtn = document.getElementById("set-grid-btn");
 
-let windowWidth = 900; //px
+let windowWidth = 500; //px
 const maxResolution = 100;
 const defaultGridSize = 16;
 
@@ -9,19 +9,31 @@ outputWindow.style.width = `${windowWidth}px`;
 outputWindow.style.height = `${windowWidth}px`;
 
 setGridBtn.addEventListener("click", () => {
-    let input = prompt("Input number of pixels for the grid:", defaultGridSize);
-    if (!isNaN(input) && input < maxResolution && input > 0) {
+    let input = prompt(`Input number of pixels for the grid side (max ${maxResolution}):`, defaultGridSize);
+    let error;
+
+    if (isNaN(input)) {
+        error = `"${input}" is not a number!`;
+    } else if (input > maxResolution) {
+        error = `${input} is greater than the maximum resolution of ${maxResolution}!`;
+    } else if (input < 1) {
+        error = `${input} is negative! It must be 1 or higher.`;
+    }
+
+    if (!error) {
         clearGrid();
         setupGrid(input);
+    } else {
+        alert(error);
     }
-})
+});
 
 function setupGrid(size = defaultGridSize) {
+    console.log(1/size);
     for (let i = 0; i < size*size; i++) {
         let square = document.createElement("div");
         square.classList.add("square");
-        square.style.width = `${windowWidth / size}px`;
-        square.style.height = `${windowWidth / size}px`;
+        square.style.flex = `1 0 ${100/size}%`;
         square.addEventListener("mouseover", (e) => {
             e.target.style.backgroundColor = "black";
         });
