@@ -1,3 +1,9 @@
 body {
     background-color: grey;
 }
+
+#eas-window {
+    border: 1px solid black;
+    display: flex;
+    flex-wrap: wrap;
+}
